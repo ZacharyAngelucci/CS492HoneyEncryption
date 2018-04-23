@@ -17,6 +17,25 @@ int encode(char[] m) {
     int start = (int)(start);
     return randomSeed(start,end);
 }
+/*
+Alright!
+Kick back, relax, and grab yourself a beverage
+Or hop if you want to just bounce to my leverage
+The evidence, as they say is in the pudding
+So show me the money, like my name is Cuba Gooding
+It ain't fools gold, its gold, fool
+Can't stop won't stop keeping it old school, so cool
+Big Spoon is my nom de plume
+I keep it popping like a needle in a new balloon
+And if you don't know by now then you need more schoolin'
+Let loose kid, get stupid
+Got more flavor than I know what to do with
+So get your hands up if you're part of the movement
+And bump to the bump to the baseline
+I made it rock before your phone had Facetime
+Yessiree, you know my steeze
+I stay fresh to death like I'm drowning in Febreze
+*/
 
 int decode(char[] c) {
     int inverse_table_length;
