@@ -71,6 +71,7 @@ int randomSeed(int start, int end) {
 }
 
 int main() {
+  
   return 0;
 }
 
