@@ -1,5 +1,5 @@
 import os
-with open('testinverse_table.txt','r') as f:
+with open('oldinverse_table.txt','r') as f:
     table = eval(f.read())
 
 for j in table:
