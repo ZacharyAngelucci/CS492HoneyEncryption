@@ -31,7 +31,7 @@ def cumul(self, m):
         prefixStr = ''.join(prefix)
         if prefixStr in self.prefixes:
             #last digit is the check dig
-            randomDigs = m[6-self.prefixes[prefixStr][0]:-1]
+            randomDigs = m[6 - self.prefixes[prefixStr][0]:-1]
             numRandomDigs = self.prefixes[prefixStr][1] - 7
             prefixCumul = self.prefix_cumul[prefixStr]
             totalCumul = prefixCumul + float(randomDigs)*pow(10,-numRandomDigs) / self.total_prob
