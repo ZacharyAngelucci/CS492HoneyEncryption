@@ -17,9 +17,10 @@ void load_prefixes(int t[PREFIX_TABLE_LENGTH][4]) {
   f = fopen("bin.txt","r");
   if(f) {
     char c;
+    int lineNumber,indexNumber;
     while( !feof(f) ) {
       c = fgetc(f);
-      printf("%c",c);
+      // Look for spaces. When one comes up either put the value in the current t[x][...] or t[x+1][...]
     }
     free(buf);
   }
@@ -34,7 +35,9 @@ void load_ordered_prefixes(int t[ORDERED_PREFIX_TABLE_LENGTH][4]) {
   // Assume max 20 chars per line. Multiply that by #lines = buffersize
   char buf[20 * ORDERED_PREFIX_TABLE_LENGTH];
 
-  // stuff
+  // Put a sorted version of the prefixes array into a new array
+  // Use selection sort?
+  // What to do when a prefix has **?
 
   free(buf);
 }
