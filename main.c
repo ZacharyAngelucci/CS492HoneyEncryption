@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
-#define seed_space_length 64
-
 double cumulative_distribution(int);
 double probability_distribution(int);
 int** get_inverse_table(int*);
@@ -10,7 +5,12 @@ void binary_search(int***,int,int,double,double*,int*);
 int next_message(int);
 int randomSeed(int,int);
 
-double seed_space = pow(2, seed_space_length) - 1;
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#define seed_space_length 64
+
+const double seed_space = pow(2, seed_space_length) - 1;
 
 int encode(int plaintext) {
     int start;
