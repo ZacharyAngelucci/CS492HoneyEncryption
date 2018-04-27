@@ -1,8 +1,8 @@
-#include "load_vitals.h"
+#include "load_vitals2.h"
 #include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+// #include <string.h>
+// #include <stdlib.h>
+// #include <stdio.h>
 
 // float *get_prefix_cumul() {
 //   float cumul_prob = 0;
@@ -25,7 +25,7 @@ int searchPrefixes(int prefix) {
 void get_randomDigs(int *prefix,int start,char *m,int *randomDigs) {
   int size = 15 - 1 - start;
   int i,o=0; for(i=start; i<size; i++) {
-    *randomDigs += m[i];
+    *randomDigs += ( (m[i]-'0') * pow(10,size-i) );
     o++;
   }
 }
@@ -47,7 +47,7 @@ float cumulative_distribution(char *plaintext) {
   int prefix[6];
 
   for(i=0; i<6; i++) {
-    prefix[i] = (int)plaintext[i];
+    prefix[i] = plaintext[i] - '0'; // converts char to int
     int prefix_i,prefixInt = 0;
     int o; for(o=0; o<i; o++) prefixInt += prefix[o];
     if((prefix_i = searchPrefixes(prefixInt)) > 0) {
