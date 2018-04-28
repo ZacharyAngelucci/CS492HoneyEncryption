@@ -32,6 +32,7 @@ credit_card_fxns = CreditCardProbabilityFxns(prefixes)
 # Use DTE on credit card example
 seed = encode(credit_card_example, credit_card_fxns)
 ciphertext = secret_key ^ seed
+print("Ctext: " + str(ciphertext))
 decipher_seed = guess_key ^ ciphertext
 
 

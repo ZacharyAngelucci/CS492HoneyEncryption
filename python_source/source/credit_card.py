@@ -15,6 +15,7 @@ Dictionary of prefix-lengths {'prefix',length}, where length = number of digits 
 
 from probabilityfunctionAPI import MessageSpaceProbabilityFxns
 import math
+import time
 
 # helper function to get denominator of prefix probabilities
 def getTotalProbability(prefixes):
@@ -109,6 +110,8 @@ class CreditCardProbabilityFxns(MessageSpaceProbabilityFxns):
         # define next message fxn
         # simplified to never carry over to another prefix
         def next_msg(self,m):
+            # time.sleep(1)
+            # print("Initial: " + str(m))
             baseNumber = int(m[:-1])
             return str(luhn(baseNumber+1))
 

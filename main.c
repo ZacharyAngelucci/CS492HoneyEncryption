@@ -1,8 +1,8 @@
+#include "itoa.h"
 #include "load_vitals.h"
 #include "cumul_dis.h"
 #include "prob_dis.h"
-
-// #include "binary_search.h"
+#include "binary_search.h"
 
 #define seed_space_length 64
 const unsigned long long int seed_space = pow(2, seed_space_length)-1;
@@ -18,38 +18,54 @@ unsigned long long int encode(char *plaintext) {
     return (unsigned long long int)(rand()*(end-start) + start);
 }
 
-int decode(int ciphertext) {
-    int *inverse_table_length;
-    int **inverse_table = get_inverse_table(inverse_table_length);
-    double seed_location = (double)ciphertext/seed_space;
-    double prev_value;
-    int prev_msg;
-    binary_search(&inverse_table,0,*inverse_table_length,seed_location,&prev_value,&prev_msg);
+unsigned long long int decode(unsigned long long int ciphertext) {
+    double seed_location; //= ciphertext/seed_space;
+    //printf("SL: %llu %llu\n",ciphertext,seed_space);
+    //double seed_location = 0.0001590605715830;
+    printf("Please compute %llu / %llu and Enter:\n",ciphertext,seed_space);
+    scanf("%lf",&seed_location);
 
-    int next_msg = next_message(prev_msg);
-    double next_value = cumulative_distribution(next_msg);
+    int i = binary_search(0,INVERSE_TABLE_LENGTH,seed_location);
+    double prev_value = inverse_table[i][0];
+    unsigned long long int prev_msg = inverse_table[i][1];
+    // printf("prev_value:%0.15f prev_msg:%llu\n",prev_value,prev_msg);
+    unsigned long long int next_msg = next_message(prev_msg);
+
+    char next_msg_str[30];
+    ITOA(next_msg,next_msg_str);
+    double next_value = cumulative_distribution(next_msg_str);
 
     if(next_msg==prev_msg) // at max message. checks to see if next==prev
         return prev_msg;
     // begin linear scan to find which range seed s falls in
+    printf("%0.15f %0.15f\n",seed_location,next_value);
     while(seed_location >= next_value) {
         //update prev and next
         prev_value = next_value;
         prev_msg = next_msg;
         next_msg = next_message(prev_msg);
-        next_value = cumulative_distribution(next_msg);
+        ITOA(next_msg,next_msg_str);
+        next_value = cumulative_distribution(next_msg_str);
     }
 
     return prev_msg;
 }
 
-void binary_search(int ***inverse_table, int start, int end, double seed_location, double *prev_value, int *prev_msg) {
-
-}
-
 int main() {
   initialize();
-  printf("Ciphertext: %llu\n",encode("4117700001669792"));
+  char *credit_card_example = "4117700001669792";
+  unsigned long long int secret_key = 2048101736616812280;
+  unsigned long long int guess_key =  3496328831800304765;
+
+  unsigned long long int seed = encode(credit_card_example);
+  unsigned long long int ciphertext = secret_key ^ seed;
+  printf("Seed: %llu\n",seed);
+  printf("Ciphertext: %llu\n",ciphertext);
+
+  unsigned long long int decipher_seed = guess_key ^ ciphertext;
+
+  unsigned long long int plaintext = decode(decipher_seed);
+  printf("Plaintext: %llu\n",plaintext);
 
   return 0;
 }

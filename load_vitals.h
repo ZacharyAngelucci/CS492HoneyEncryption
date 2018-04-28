@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+//#include <string.h>
 #include <unistd.h>
 #include <math.h>
 #include <inttypes.h>
 #include <time.h>
 
 #define PREFIX_TABLE_LENGTH 2081
-#define INVERSE_TABLE_LENGTH 150881
+#define INVERSE_TABLE_LENGTH 150887
 
 int prefixes[PREFIX_TABLE_LENGTH][4];
 int ordered_prefixes[PREFIX_TABLE_LENGTH][4];
@@ -22,15 +22,50 @@ int searchPrefixes(int prefix) {
 }
 
 void get_randomDigs(int *prefix,int start,char *m,int64_t *randomDigs) {
-  int size = 15; // Credit card # size -1
-  int i,o=0; for(i=start; i<size; i++) {
+  int i=0,o=0,size=0;
+
+  // The following should be size=cardlength-1
+  while(m[size+1] != '\0') {
+    size++;
+  }
+
+  for(i=start; i<size; i++) {
     *randomDigs += ( (m[i]-'0') * pow(10,size-i-1) );
     o++;
   }
 }
 
-int next_message(int prev_msg) {
+/*
+def luhn(m):
+    sum = 0
+    for i in list(str(m)):
+        sum += int(i)
+    last = (9 * sum) % 10
+    return m * 10 + last
+*/
 
+unsigned long long int next_message(unsigned long long int prev_msg) {
+  //printf("Intitial: %llu\n",prev_msg);
+  //sleep(1);
+  int lastDigit = prev_msg%10;
+  prev_msg = prev_msg - lastDigit;
+  prev_msg = prev_msg / 10;
+  prev_msg++;
+
+  char strBaseNumber[30];
+  ITOA(prev_msg,strBaseNumber);
+  // printf("\t%s\n",strBaseNumber);
+
+  int sum = 0;
+  int i=0; while(strBaseNumber[i] != '\0') {
+    sum += (strBaseNumber[i] - '0');
+    i++;
+  }
+  int last = (9 * sum) % 10;
+
+  unsigned long long int next_msg = (prev_msg*10) + last;
+  //printf("Final: %llu\n",next_msg);
+  return next_msg;
 }
 
 void load_prefixes(int t[PREFIX_TABLE_LENGTH][4]) {
@@ -144,13 +179,22 @@ void load_inverse_table(double t[INVERSE_TABLE_LENGTH][2]) {
       c = fgetc(f);
       if( c==' ' || c=='\n') {
         double value=0;
-        int isDecimal=0; if(buf[1]=='.') isDecimal=3;
-        int i; for(i=isDecimal; i<objectLength; i++)
+        int isDecimal=0; if(buf[1]=='.') isDecimal=2;
+        int i; for(i=isDecimal; i<objectLength; i++) {
           if(isDecimal) {
-            value += ( (buf[i]-'0') * pow(10,-i-2) );
+            value += ( (buf[i]-'0') * pow(10,-i+1) );
+            // if(lineNumber==75443) {
+            //   printf("%0.15lf %c\n",value,buf[i]);
+            //   sleep(1);
+            // }
           }
-          else
+          else {
             value += ( (buf[i]-'0') * pow(10,objectLength-i-1) );
+          }
+        }
+        // if(lineNumber==75443) {
+        //   printf("%0.15lf %s\n",value,buf);
+        // }
 
         t[lineNumber][numElementsOnLine] = value;
         objectLength=0;
