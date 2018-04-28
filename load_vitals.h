@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <inttypes.h>
+#include <time.h>
 
 #define PREFIX_TABLE_LENGTH 2081
 #define INVERSE_TABLE_LENGTH 150881

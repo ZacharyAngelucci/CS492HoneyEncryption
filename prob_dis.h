@@ -14,10 +14,9 @@ double probability_distribution(char *plaintext) {
       // last digit is the check dig
       int64_t randomDigs=0;
         get_randomDigs(prefix,6,plaintext,&randomDigs);
-      printf("RandomDigs: %" PRId64 "\n",randomDigs);
+      // printf("RandomDigs: %" PRId64 "\n",randomDigs);
       int numInitialZeros=0; while(plaintext[6+numInitialZeros] == '0') numInitialZeros++;
       int numRandomDigs = floor(log10(abs(randomDigs))) + 1 + numInitialZeros; // len(randomDigs)
-      // printf("numRandomDigs: %i\n",numRandomDigs);
       double prob = prefixProb * pow(10,-numRandomDigs);
       return prob;
     }
