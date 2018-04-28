@@ -1,23 +1,4 @@
-#include "load_vitals2.h"
-
-int searchPrefixes(int prefix) {
-  int o; for(o=0; o<PREFIX_TABLE_LENGTH; o++)
-    if(prefixes[o][0] == prefix)
-      return o;
-  return -1;
-}
-
-void get_randomDigs(int *prefix,int start,char *m,unsigned long long int *randomDigs) {
-  int size = 15; // Credit card # size -1
-  int i,o=0; for(i=start; i<size; i++) {
-    *randomDigs += ( (m[i]-'0') * pow(10,size-i-1) );
-    o++;
-  }
-}
-
-// Assume that ordered prefixes comes from a file
 double cumulative_distribution(char *plaintext) {
-  initialize();
   int i;
 
   // Getting prefix_cumul
@@ -42,7 +23,7 @@ double cumulative_distribution(char *plaintext) {
     // printf("%i\n",prefixInt);
     if((prefix_i = searchPrefixes(prefixInt)) > 0) {
       // last digit is the check dig
-      unsigned long long int randomDigs;
+      int64_t randomDigs=0;
         get_randomDigs(prefix,6-prefixes[prefix_i][1],plaintext,&randomDigs);
       // printf("RandomDigs: %llu\n",randomDigs);
       int numRandomDigs = prefixes[prefix_i][2] - 7;
@@ -58,7 +39,7 @@ double cumulative_distribution(char *plaintext) {
   return -1;
 }
 
-int main() {
-  printf("%g\n",cumulative_distribution("4117700001669792"));
-  return 0;
-}
+// int main() {
+//   printf("%g\n",cumulative_distribution("4117700001669792"));
+//   return 0;
+// }

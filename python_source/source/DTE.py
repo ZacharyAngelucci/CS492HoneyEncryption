@@ -18,7 +18,8 @@ the seed space.
 def encode(m, pfxns):
     # get range of seed space to pick random string from
     print( "CUMUL: " + str(pfxns.cumul_distr(m)) )
-    
+    print( "PROB: " + str(pfxns.prob_distr(m)) )
+
     start = pfxns.cumul_distr(m) * seed_space
     end = int(start + pfxns.prob_distr(m)*seed_space) - 1
     start = int(start)

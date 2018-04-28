@@ -1,76 +1,56 @@
-double cumulative_distribution(int);
-double probability_distribution(int);
-int** get_inverse_table(int*);
-void binary_search(int***,int,int,double,double*,int*);
-int next_message(int);
-int randomSeed(int,int);
+#include "load_vitals.h"
+#include "cumul_dis.h"
+#include "prob_dis2.h"
+// #include "binary_search.h"
 
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
 #define seed_space_length 64
+#define seed_space ( pow(2, seed_space_length)-1 )
 
-const double seed_space = pow(2, seed_space_length) - 1;
-
-int encode(int plaintext) {
+int encode(char *plaintext) {
     int start;
+    if(1){
+      printf("Cumulative: %0.11lf\n",cumulative_distribution(plaintext));
+      printf("Total Prob: %0.11lf\n",probability_distribution(plaintext));
+      return 0;
+    }
     double start0 = cumulative_distribution(plaintext) * seed_space;
     int end = (int)(start + probability_distribution(plaintext) * seed_space);
     start = (int)(start0);
-    return randomSeed(start,end);
+    return 0; //randomSeed(start,end);
 }
 
-int decode(int ciphertext) {
-    int *inverse_table_length;
-    int **inverse_table = get_inverse_table(inverse_table_length);
-    double seed_location = (double)ciphertext/seed_space;
-    double prev_value;
-    int prev_msg;
-    binary_search(&inverse_table,0,*inverse_table_length,seed_location,&prev_value,&prev_msg);
-
-    int next_msg = next_message(prev_msg);
-    double next_value = cumulative_distribution(next_msg);
-
-    if(next_msg==prev_msg) // at max message. checks to see if next==prev
-        return prev_msg;
-    // begin linear scan to find which range seed s falls in
-    while(seed_location >= next_value) {
-        //update prev and next
-        prev_value = next_value;
-        prev_msg = next_msg;
-        next_msg = next_message(prev_msg);
-        next_value = cumulative_distribution(next_msg);
-    }
-
-    return prev_msg;
-}
-
-double cumulative_distribution(int plaintext) {
-
-}
-
-double probability_distribution(int plaintext) {
-
-}
-
-// will mimic create_inverse_sample_table
-int** get_inverse_table(int *table_length) {
-
-}
-
-void binary_search(int ***inverse_table, int start, int end, double seed_location, double *prev_value, int *prev_msg) {
-
-}
-
-int next_message(int prev_msg) {
-
-}
-
-int randomSeed(int start, int end) {
-
-}
+// int decode(int ciphertext) {
+//     int *inverse_table_length;
+//     int **inverse_table = get_inverse_table(inverse_table_length);
+//     double seed_location = (double)ciphertext/seed_space;
+//     double prev_value;
+//     int prev_msg;
+//     binary_search(&inverse_table,0,*inverse_table_length,seed_location,&prev_value,&prev_msg);
+//
+//     int next_msg = next_message(prev_msg);
+//     double next_value = cumulative_distribution(next_msg);
+//
+//     if(next_msg==prev_msg) // at max message. checks to see if next==prev
+//         return prev_msg;
+//     // begin linear scan to find which range seed s falls in
+//     while(seed_location >= next_value) {
+//         //update prev and next
+//         prev_value = next_value;
+//         prev_msg = next_msg;
+//         next_msg = next_message(prev_msg);
+//         next_value = cumulative_distribution(next_msg);
+//     }
+//
+//     return prev_msg;
+// }
+//
+// void binary_search(int ***inverse_table, int start, int end, double seed_location, double *prev_value, int *prev_msg) {
+//
+// }
 
 int main() {
+  initialize();
+  encode("4117700001669792");
 
   return 0;
 }
