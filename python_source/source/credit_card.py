@@ -6,7 +6,7 @@
 # the message space of credit cards.
 
 """
-Requires: 
+Requires:
 
 Dictionary of prefix-probabilities {'prefix',prob(prefix)}, where sum of all prob(prefix) = 1
 Dictionary of prefix-lengths {'prefix',length}, where length = number of digits in credit cards with prefix 'prefix'
@@ -94,9 +94,14 @@ class CreditCardProbabilityFxns(MessageSpaceProbabilityFxns):
                 if prefixStr in self.prefixes:
                     #last digit is the check dig
                     randomDigs = m[6-self.prefixes[prefixStr][0]:-1]
+                    #print("RandomDigs: " + str(randomDigs))
                     numRandomDigs = self.prefixes[prefixStr][1] - 7
+                    #print("numRandomDigs: " + str(numRandomDigs))
                     prefixCumul = self.prefix_cumul[prefixStr]
+                    #print("PrefixStr: " + prefixStr)
+                    #print("prefixCumul: " + str(prefixCumul))
                     totalCumul = prefixCumul + float(randomDigs)*pow(10,-numRandomDigs) / self.total_prob
+                    #print("totalCumul: " + str(totalCumul))
                     return totalCumul
             print "Invalid credit card"
             return -1
@@ -114,5 +119,3 @@ class CreditCardProbabilityFxns(MessageSpaceProbabilityFxns):
 
         # Initialize MessageSpaceProbabilityFxns
         MessageSpaceProbabilityFxns.__init__(self, cumul, prob, next_msg, get_inverse_table)
-
-    

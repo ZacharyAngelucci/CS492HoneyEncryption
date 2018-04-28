@@ -17,13 +17,15 @@ the seed space.
 """
 def encode(m, pfxns):
     # get range of seed space to pick random string from
+    print( "CUMUL: " + str(pfxns.cumul_distr(m)) )
+    
     start = pfxns.cumul_distr(m) * seed_space
-    end = int(start + pfxns.prob_distr(m)*seed_space) - 1 
+    end = int(start + pfxns.prob_distr(m)*seed_space) - 1
     start = int(start)
 
     # pick random string from corresponding seed space
     seed = int(random.random() * (end-start) + start)
-    
+
     return seed
 
 """
@@ -36,7 +38,7 @@ def binary_search(table, start, end, value):
     # base case
     if size == 1 or size == 0:
         return table[start]
-    
+
     mid = start + size/2
     (mid_value, mid_msg) = table[mid]
     # recursion step
@@ -44,7 +46,7 @@ def binary_search(table, start, end, value):
         return binary_search(table, mid, end, value)
     else:
         return binary_search(table, start, mid, value)
-    
+
 
 """
 Takes in a seed and a MessageSpaceProbabilityFxns object and
@@ -65,5 +67,5 @@ def decode(s, pfxns):
         (prev_value, prev_msg) = (next_value, next_msg)
         next_msg = pfxns.next_message(prev_msg)
         next_value = pfxns.cumul_distr(next_msg)
-    
+
     return prev_msg
