@@ -1,5 +1,12 @@
+/*
+    Note: This is NOT my code, this source code of itoa was obtained from:
+    https://en.wikibooks.org/wiki/C_Programming/stdlib.h/itoa
+
+    It was necessary to implement a customized itoa to deal with unsigned long long ints
+*/
+
 #include <string.h>
-// https://en.wikibooks.org/wiki/C_Programming/stdlib.h/itoa
+
 /* reverse:  reverse string s in place */
 void reverse(char s[])
 {
