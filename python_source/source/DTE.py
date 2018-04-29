@@ -22,10 +22,12 @@ def encode(m, pfxns):
     start = pfxns.cumul_distr(m) * seed_space
     end = int(start + pfxns.prob_distr(m)*seed_space) - 1
     start = int(start)
+    # print("start: " + str(start))
 
     # pick random string from corresponding seed space
-    seed = int(random.random() * (end-start) + start)
-    print("Seed: " + str(seed))
+    pretendRandomNumber = 0.595040256028
+    seed = int(pretendRandomNumber * (end-start) + start) # random.random()
+    # print("Seed: " + str(seed))
 
     return seed
 
@@ -61,15 +63,14 @@ search to find corresponding message.
 """
 def decode(s, pfxns):
     table = pfxns.get_inverse_cumul_distr_samples()
-    print(str(s) + " " + str(seed_space))
     seed_loc = float(s)/seed_space
     (prev_value, prev_msg) = binary_search(table, 0, len(table), seed_loc)
     next_msg = pfxns.next_message(prev_msg)
     next_value = pfxns.cumul_distr(next_msg)
-    print(str(next_value))
     if next_msg == prev_msg: # at max message
         return prev_msg
     # begin linear scan to find which range seed s falls in
+    print(str(seed_loc))
     print(str(seed_loc) + " " + str(next_value))
     while seed_loc >= next_value:
         # update prev and next

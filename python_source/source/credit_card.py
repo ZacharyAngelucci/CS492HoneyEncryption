@@ -30,7 +30,10 @@ Creates prefix cumulative probability distribution
 def create_cumul_fxn(prefix_order, prefixes, total_prob):
     cumul_prob = 0
     prefix_cumul = {}
+    # print(str(total_prob))
     for prefix in prefix_order:
+        # print(str(cumul_prob) + " " + str(prefixes[prefix][2]))
+        # time.sleep(1)
         prefix_cumul[prefix] = cumul_prob
         cumul_prob += float(prefixes[prefix][2]) / total_prob
     return prefix_cumul
@@ -95,14 +98,14 @@ class CreditCardProbabilityFxns(MessageSpaceProbabilityFxns):
                 if prefixStr in self.prefixes:
                     #last digit is the check dig
                     randomDigs = m[6-self.prefixes[prefixStr][0]:-1]
-                    #print("RandomDigs: " + str(randomDigs))
+                    # print("RandomDigs: " + str(randomDigs))
                     numRandomDigs = self.prefixes[prefixStr][1] - 7
-                    #print("numRandomDigs: " + str(numRandomDigs))
+                    # print("numRandomDigs: " + str(numRandomDigs))
                     prefixCumul = self.prefix_cumul[prefixStr]
                     #print("PrefixStr: " + prefixStr)
-                    #print("prefixCumul: " + str(prefixCumul))
+                    # print("prefixCumul: " + str(prefixCumul))
                     totalCumul = prefixCumul + float(randomDigs)*pow(10,-numRandomDigs) / self.total_prob
-                    #print("totalCumul: " + str(totalCumul))
+                    # print("totalCumul: " + str(totalCumul))
                     return totalCumul
             print "Invalid credit card"
             return -1

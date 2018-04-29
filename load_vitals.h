@@ -9,7 +9,7 @@
 #define PREFIX_TABLE_LENGTH 2081
 #define INVERSE_TABLE_LENGTH 150887
 
-int prefixes[PREFIX_TABLE_LENGTH][4];
+int prefixes[PREFIX_TABLE_LENGTH][5];
 int ordered_prefixes[PREFIX_TABLE_LENGTH][4];
 double inverse_table[INVERSE_TABLE_LENGTH][2];
 int total_prob;
@@ -35,15 +35,6 @@ void get_randomDigs(int *prefix,int start,char *m,int64_t *randomDigs) {
   }
 }
 
-/*
-def luhn(m):
-    sum = 0
-    for i in list(str(m)):
-        sum += int(i)
-    last = (9 * sum) % 10
-    return m * 10 + last
-*/
-
 unsigned long long int next_message(unsigned long long int prev_msg) {
   //printf("Intitial: %llu\n",prev_msg);
   //sleep(1);
@@ -68,7 +59,7 @@ unsigned long long int next_message(unsigned long long int prev_msg) {
   return next_msg;
 }
 
-void load_prefixes(int t[PREFIX_TABLE_LENGTH][4]) {
+void load_prefixes(int t[PREFIX_TABLE_LENGTH][5]) {
   char buf[6]; // Longest we're gonna need is for a prefix which is of length 6
   FILE *f;
   f = fopen("bin.txt","r");
@@ -160,6 +151,9 @@ void load_ordered_prefixes(int t[PREFIX_TABLE_LENGTH][4]) {
 
         for(p=0; p<4; p++)
           t[o+1][p] = temp[p];
+
+        // prefixes[o][4] = o+1;
+        // prefixes[o+1][4] = o;
       }
     }
     if(!swaps) break;
